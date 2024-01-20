@@ -39,31 +39,6 @@ void keyPressed() {
   if (key == 't') towers.add(new Tower(mouseX, mouseY, loadImage("tower.png"), 80, 1, 200));
 }
 
-// Funktion fuer die automatischen Monster Spawns
-void monsterSpawnTick() {
-  if (globalMonsterTick >= currentMonsterRate) {
-
-    // Monster zufaellig spawnen
-    switch ((int)random(1, 4)) {
-      case 1:
-        monsters.add(new Monster(300, (int)random(1, 3), loadImage("monster_pink.png"), 65));
-        break;
-      case 2:
-        monsters.add(new Monster(1000, (int)random(2, 5), loadImage("monster_blue.png"), 70));
-        break;
-      case 3:
-        monsters.add(new Monster(2500, (int)random(3, 7), loadImage("monster_green.png"), 60));
-        break;
-    }
-
-    globalMonsterTick = 0;
-  }
-  else {
-    globalMonsterTick++;
-  }
-}
-
-
 void drawTowers() {
   for (Tower t : towers) {
     image(t.image, t.x-(t.size/2), t.y-(t.size/2), t.size, t.size);

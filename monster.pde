@@ -31,41 +31,37 @@ class Monster {
     hp -= amount;
     if (hp <= 0) this.visible = false;
   }
-}
 
-//
-//  Lässt für ein Monster ein Tick vergehen
-//
-void oneMonsterTick(Monster m) {
+  void tick() {
+    if (this.checkpoint >= pointsX.length || !this.visible) {    // Wenn nächster Checkpoint nicht mehr gültig ist
+      this.visible = false;
+      return;
+    }
 
-  if (m.checkpoint >= pointsX.length) {    // Wenn nächster Checkpoint nicht mehr gültig ist
-    m.visible = false;
-    return;
-  }
+    if (this.x < pointsX[this.checkpoint] - this.speed) this.x += this.speed;        // Anpassen von X Koordinate
+    else if (this.x > pointsX[this.checkpoint] + this.speed) this.x -= this.speed;
 
-  if (m.x < pointsX[m.checkpoint] - m.speed) m.x += m.speed;        // Anpassen von X Koordinate
-  else if (m.x > pointsX[m.checkpoint] + m.speed) m.x -= m.speed;
+    if (this.y < pointsY[this.checkpoint] - this.speed) this.y += this.speed;        // Anpassen von Y Koordinate
+    else if (this.y > pointsY[this.checkpoint] + this.speed) this.y -= this.speed;
 
-  if (m.y < pointsY[m.checkpoint] - m.speed) m.y += m.speed;        // Anpassen von Y Koordinate
-  else if (m.y > pointsY[m.checkpoint] + m.speed) m.y -= m.speed;
+    if (this.x >= pointsX[this.checkpoint] - this.speed &&         // Wenn Checkpoint erreicht
+      this.x <= pointsX[this.checkpoint] + this.speed &&
+      this.y >= pointsY[this.checkpoint] - this.speed &&
+      this.y <= pointsY[this.checkpoint] + this.speed) {
 
-  if (m.x >= pointsX[m.checkpoint] - m.speed &&         // Wenn Checkpoint erreicht
-      m.x <= pointsX[m.checkpoint] + m.speed &&
-      m.y >= pointsY[m.checkpoint] - m.speed &&
-      m.y <= pointsY[m.checkpoint] + m.speed) {
+        this.x = pointsX[this.checkpoint];
+        this.y = pointsY[this.checkpoint];
+        this.checkpoint ++;
+    }
 
-        m.x = pointsX[m.checkpoint];
-        m.y = pointsY[m.checkpoint];
-        m.checkpoint ++;
-  }
+    for (Tower t : towers) {
+      if (dist(this.x, this.y, t.x, t.y) <= t.range) {
+        this.damage(t.damage);
 
-  for (Tower t : towers) {
-    if (dist(m.x, m.y, t.x, t.y) <= t.range) {
-      m.damage(t.damage);
-
-      stroke(255, 0, 0);
-      strokeWeight(4);
-      line(m.x, m.y, t.x, t.y);
+        stroke(255, 0, 0);
+        strokeWeight(4);
+        line(this.x, this.y, t.x, t.y);
+      }
     }
   }
 }
@@ -76,7 +72,33 @@ void oneMonsterTick(Monster m) {
 void allMonstersTick(ArrayList<Monster> monsterList) {
   for (Monster a : monsterList) {
     if (a != null && a.visible == true) {
-      oneMonsterTick(a);
+      a.tick();
     }
+  }
+}
+
+//
+// Funktion fuer die automatischen Monster Spawns
+//
+void monsterSpawnTick() {
+  if (globalMonsterTick >= currentMonsterRate) {
+
+    // Monster zufaellig spawnen
+    switch ((int)random(1, 4)) {
+      case 1:
+        monsters.add(new Monster(300, (int)random(1, 3), loadImage("monster_pink.png"), 65));
+        break;
+      case 2:
+        monsters.add(new Monster(1000, (int)random(2, 5), loadImage("monster_blue.png"), 70));
+        break;
+      case 3:
+        monsters.add(new Monster(2500, (int)random(3, 7), loadImage("monster_green.png"), 60));
+        break;
+    }
+
+    globalMonsterTick = 0;
+  }
+  else {
+    globalMonsterTick++;
   }
 }
