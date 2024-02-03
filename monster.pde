@@ -11,8 +11,10 @@ class Monster {
   boolean visible = true;
   int speed;
   int size;
+  
+  int coins;
 
-  Monster(int hp, int speed, PImage img, int size) {
+  Monster(int hp, int speed, PImage img, int size, int coins) {
     this.x = pointsX[0];
     this.y = pointsY[0];
     this.hp = hp;
@@ -20,6 +22,7 @@ class Monster {
     this.image = img;
     this.speed = speed;
     this.size = size;
+    this.coins = coins;
 
     this.checkpoint = 1;  // Immer zuerst ersten Checkpoint anpeilen
     this.visible = true;  // Immer am Anfang sichtbar
@@ -29,7 +32,10 @@ class Monster {
 
   void damage(int amount) {
     hp -= amount;
-    if (hp <= 0) this.visible = false;
+    if (hp <= 0) {
+      this.visible = false;
+      allCoins += this.coins;
+    }
   }
 
   void tick() {
@@ -86,13 +92,13 @@ void monsterSpawnTick() {
     // Monster zufaellig spawnen
     switch ((int)random(1, 4)) {
       case 1:
-        monsters.add(new Monster(300, (int)random(1, 3), loadImage("monster_pink.png"), 65));
+        monsters.add(new Monster(300, (int)random(1, 3), loadImage("monster_pink.png"), 65, 1));
         break;
       case 2:
-        monsters.add(new Monster(1000, (int)random(2, 5), loadImage("monster_blue.png"), 70));
+        monsters.add(new Monster(1000, (int)random(2, 5), loadImage("monster_blue.png"), 70, 2));
         break;
       case 3:
-        monsters.add(new Monster(2500, (int)random(3, 7), loadImage("monster_green.png"), 60));
+        monsters.add(new Monster(2500, (int)random(3, 7), loadImage("monster_green.png"), 60, 3));
         break;
     }
 

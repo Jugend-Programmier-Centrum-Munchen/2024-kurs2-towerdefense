@@ -11,32 +11,54 @@ ArrayList<Tower> towers = new ArrayList<Tower>();
 int globalMonsterTick;
 int currentMonsterRate;
 
+int allCoins = 30;
+
 void setup() {
   size(1000, 670);
   backgroundMap = loadImage("back.png");
   background(backgroundMap);
+  drawCoins();
 
   towers.add(new Tower(440, 350, loadImage("tower.png"), 80, 2, 200)); // Erster Standart-Tower
 
   globalMonsterTick = 0;
-  currentMonsterRate = 80;  // Je hoeher dieser Wert, desto seltender die Monster Spawns
+  currentMonsterRate = 50;  // Je hoeher dieser Wert, desto seltender die Monster Spawns
 }
 
 void draw() {
   background(backgroundMap);
+  drawCoins();
 
   monsterSpawnTick();
   allMonstersTick(monsters);
 
-  drawMonsters();
   drawTowers();
+  drawMonsters();
 }
 
 void keyPressed() {
-  if (key == '1') monsters.add(new Monster(300, (int)random(1, 3), loadImage("monster_pink.png"), 65));
-  if (key == '2') monsters.add(new Monster(1000, (int)random(2, 5), loadImage("monster_blue.png"), 70));
-  if (key == '3') monsters.add(new Monster(2500, (int)random(3, 7), loadImage("monster_green.png"), 60));
-  if (key == 't') towers.add(new Tower(mouseX, mouseY, loadImage("tower.png"), 80, 1, 200));
+  if (key == '1') monsters.add(new Monster(300, (int)random(1, 3), loadImage("monster_pink.png"), 65, 1));
+  if (key == '2') monsters.add(new Monster(1000, (int)random(2, 5), loadImage("monster_blue.png"), 70, 2));
+  if (key == '3') monsters.add(new Monster(2500, (int)random(3, 7), loadImage("monster_green.png"), 60, 3));
+  if (key == 't') placeTower(mouseX, mouseY);
+}
+
+void placeTower(int mX, int mY) {
+  if (allCoins >= 5) {
+    allCoins -= 5;
+    towers.add(new Tower(mX, mY, loadImage("tower.png"), 80, 1, 200));
+  }
+}
+
+void drawCoins() {
+  image(loadImage("coin.png"), 10, 10, 50, 50);
+  
+  fill(10);
+  rect(70, 15, 80, 40);
+  
+  textSize(30);
+  fill(255); 
+  text(allCoins, 100, 33);
 }
 
 void drawTowers() {
