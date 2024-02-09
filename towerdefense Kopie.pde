@@ -1,30 +1,36 @@
 // Checkpoints und Einstellungen der Karte
 PImage backgroundMap;
 
-int[] pointsX = {-10, 160, 160, 360, 360, 630, 630, 1010};
-int[] pointsY = {360, 360, 170, 170, 425, 425, 310, 310};
-ArrayList<Monster> monsters = new ArrayList<Monster>();
-ArrayList<Tower> towers = new ArrayList<Tower>();
-int globalMonsterTick;
-int currentMonsterRate;
-int allCoins = 30;
-
 //neu
 PImage castleImage;
 int lives = 100;
 
+int[] pointsX = {-10, 160, 160, 360, 360, 630, 630, 1010};
+int[] pointsY = {360, 360, 170, 170, 425, 425, 310, 310};
+
+// Listen fuer Monster und Tuerme
+ArrayList<Monster> monsters = new ArrayList<Monster>();
+ArrayList<Tower> towers = new ArrayList<Tower>();
+
+// Variablen fuer automatischen Monster Spawn
+int globalMonsterTick;
+int currentMonsterRate;
+
+int allCoins = 30;
 
 void setup() {
   size(1000, 670);
   backgroundMap = loadImage("back.png");
   background(backgroundMap);
-  towers.add(new Tower(440, 350, loadImage("tower.png"), 80, 2, 200)); // Erster Standart-Tower
-  globalMonsterTick = 0;
-  currentMonsterRate = 50;
-    
+  
   //neu
   castleImage = loadImage("burg.png");
   drawCoins();
+
+  towers.add(new Tower(440, 350, loadImage("tower.png"), 80, 2, 200)); // Erster Standart-Tower
+
+  globalMonsterTick = 0;
+  currentMonsterRate = 50;  // Je hoeher dieser Wert, desto seltender die Monster Spawns
 }
 
 void draw() {
@@ -78,22 +84,25 @@ void drawMonsters() {
   for (Monster a : monsters) {
     if (a != null && a.visible == true) {
       image(a.image, a.x-(a.size/2), a.y-(a.size/2), a.size, a.size);
+
       fill(170);  // Health Bar (Background)
       stroke(80);
       strokeWeight(2);
       rect(a.x-30, a.y-50, 60, 6, 5);
+
       fill(210, 30, 30);  // Health Bar (Red)
       stroke(80);
       strokeWeight(2);
       double f = (double)a.hp / (double)a.hpmax * 60.0;
       rect(a.x-30, a.y-50, (int)f, 6, 5);
+
       textSize(20);
       fill(10);
       textAlign(CENTER, CENTER);
       text(a.hp, a.x, a.y-50);
       
-      //neu neu neu neu neu neu neu neu neu neu neu neu neu neu neu u neu neu neu neu neu neu neu neu neu neu neu neu neu
-      if (a.x >= 990) {
+      //neu
+      if (a.x >= 990 && a.y >= 305 && a.y <= 335) {
         lives--;
         a.visible = false;
       }
@@ -101,16 +110,13 @@ void drawMonsters() {
   }
 }
 
-//neu neu neu neu neu neu neu neu neu neu neu neu neu neu neu neu neuu neu neu neu neu neu neu neu neu neu neu neu neu neuu neu neu neu neu neu neu neu neu neu neu neu neu neu
+//neu
 void drawCastle() {
   image(castleImage, 885, 220, 120, 120);
 }
-
-//neu neu neu neu neu neu neu neu neu neu neu neu neu neu neu neu neuu neu neu neu neu neu neu neu neu neu neu neu neu neuu neu neu neu neu neu neu neu neu neu neu neu neu neu
-
 void drawLives() {
   textSize(20);
   fill(255, 0, 0);
   textAlign(CENTER, CENTER);
-  text("Lives: " + lives, 942, 350);
+  text("Lives: " + lives, 885, 350);
 }

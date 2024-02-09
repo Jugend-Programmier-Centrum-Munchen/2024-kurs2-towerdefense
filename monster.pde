@@ -35,6 +35,7 @@ class Monster {
     if (hp <= 0) {
       this.visible = false;
       allCoins += this.coins;
+      monsterTot++;
     }
   }
 
