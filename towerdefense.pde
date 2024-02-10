@@ -21,7 +21,7 @@ void setup() {
   towers.add(new Tower(440, 350, loadImage("tower.png"), 80, 2, 200)); // Erster Standart-Tower
   globalMonsterTick = 0;
   currentMonsterRate = 50;
-    
+
   //neu
   castleImage = loadImage("burg.png");
   drawCoins();
@@ -36,11 +36,8 @@ void draw() {
 
   drawTowers();
   drawMonsters();
-  
-  //neu
-  drawCastle();
-  drawLives();
 
+  drawCastle();
 }
 
 void keyPressed() {
@@ -59,12 +56,12 @@ void placeTower(int mX, int mY) {
 
 void drawCoins() {
   image(loadImage("coin.png"), 10, 10, 50, 50);
-  
+
   fill(10);
   rect(70, 15, 80, 40);
-  
+
   textSize(30);
-  fill(255); 
+  fill(255);
   text(allCoins, 100, 33);
 }
 
@@ -91,24 +88,13 @@ void drawMonsters() {
       fill(10);
       textAlign(CENTER, CENTER);
       text(a.hp, a.x, a.y-50);
-      
-      //neu neu neu neu neu neu neu neu neu neu neu neu neu neu neu u neu neu neu neu neu neu neu neu neu neu neu neu neu
-      if (a.x >= 990) {
-        lives--;
-        a.visible = false;
-      }
     }
   }
 }
 
-//neu neu neu neu neu neu neu neu neu neu neu neu neu neu neu neu neuu neu neu neu neu neu neu neu neu neu neu neu neu neuu neu neu neu neu neu neu neu neu neu neu neu neu neu
 void drawCastle() {
   image(castleImage, 885, 220, 120, 120);
-}
 
-//neu neu neu neu neu neu neu neu neu neu neu neu neu neu neu neu neuu neu neu neu neu neu neu neu neu neu neu neu neu neuu neu neu neu neu neu neu neu neu neu neu neu neu neu
-
-void drawLives() {
   textSize(20);
   fill(255, 0, 0);
   textAlign(CENTER, CENTER);

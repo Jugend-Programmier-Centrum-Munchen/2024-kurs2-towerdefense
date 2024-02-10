@@ -2,6 +2,8 @@
 // Klasse fuer die Monster
 //
 
+int monsterTot = 0;
+
 class Monster {
   int x, y;
   int hp;
@@ -11,7 +13,7 @@ class Monster {
   boolean visible = true;
   int speed;
   int size;
-  
+
   int coins;
 
   Monster(int hp, int speed, PImage img, int size, int coins) {
@@ -42,6 +44,7 @@ class Monster {
   void tick() {
     if (this.checkpoint >= pointsX.length || !this.visible) {    // Wenn nächster Checkpoint nicht mehr gültig ist
       this.visible = false;
+      lives--;
       return;
     }
 
