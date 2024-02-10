@@ -1,10 +1,12 @@
 // Checkpoints und Einstellungen der Karte
 PImage backgroundMap;
 
-int[] pointsX = {-10, 160, 160, 360, 360, 630, 630, 1010};
+int[] pointsX = {-10, 160, 160, 360, 360, 630, 630, 900};
 int[] pointsY = {360, 360, 170, 170, 425, 425, 310, 310};
+
 ArrayList<Monster> monsters = new ArrayList<Monster>();
 ArrayList<Tower> towers = new ArrayList<Tower>();
+
 int globalMonsterTick;
 int currentMonsterRate;
 int allCoins = 30;

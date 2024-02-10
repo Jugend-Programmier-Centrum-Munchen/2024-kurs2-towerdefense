@@ -63,16 +63,7 @@ class Monster {
         this.y = pointsY[this.checkpoint];
         this.checkpoint ++;
     }
-
-    for (Tower t : towers) {
-      if (dist(this.x, this.y, t.x, t.y) <= t.range) {
-        this.damage(t.damage);
-
-        stroke(255, 0, 0);
-        strokeWeight(4);
-        line(this.x, this.y, t.x, t.y);
-      }
-    }
+   
   }
 }
 
