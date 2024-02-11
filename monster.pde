@@ -63,7 +63,6 @@ class Monster {
         this.y = pointsY[this.checkpoint];
         this.checkpoint ++;
     }
-   
   }
 }
 
