@@ -20,7 +20,7 @@ void setup() {
   size(1000, 670);
   backgroundMap = loadImage("back.png");
   background(backgroundMap);
-  towers.add(new Tower(440, 350, loadImage("tower.png"), 80, 2, 200)); // Erster Standart-Tower
+  towers.add(new BasicTower(440, 350, loadImage("tower.png"), 80, 2, 200)); // Erster Standart-Tower
   globalMonsterTick = 0;
   currentMonsterRate = 50;
 
@@ -43,16 +43,58 @@ void draw() {
 }
 
 void keyPressed() {
-  if (key == '1') monsters.add(new Monster(300, (int)random(1, 3), loadImage("monster_pink.png"), 65, 1));
-  if (key == '2') monsters.add(new Monster(1000, (int)random(2, 5), loadImage("monster_blue.png"), 70, 2));
-  if (key == '3') monsters.add(new Monster(2500, (int)random(3, 7), loadImage("monster_green.png"), 60, 3));
-  if (key == 't') placeTower(mouseX, mouseY);
+   if (key == '1') {
+    placeTower(mouseX, mouseY, "basic");
+  }
+  if (key == '2') {
+    placeTower(mouseX, mouseY, "flamethrower");
+  }
 }
+//updated code 24.02
 
-void placeTower(int mX, int mY) {
-  if (allCoins >= 5) {
-    allCoins -= 5;
-    towers.add(new Tower(mX, mY, loadImage("tower.png"), 80, 1, 200));
+void placeTower(int mX, int mY, String towerType) {
+  int cost = 0; // You'll need to define the cost based on tower type
+  PImage towerImage= loadImage("tower.png");; // Default image, change as needed
+  int towerSize = 80; // Default size, adjust as necessary
+  int towerDamage = 1; // Default damage, adjust as necessary
+  int towerRange = 200; // Default range, adjust as necessary
+
+  // Determine the specific attributes and cost for each tower type
+  switch (towerType) {
+    case "basic":
+      cost = 5; // Example cost
+      towerImage = loadImage("tower.png");
+      towerDamage = 2;
+      towerRange = 200;
+      break;
+    case "flamethrower":
+      cost = 10; // Example cost
+      towerImage = loadImage("tower_flame.png");
+      towerDamage = 4;
+      towerRange = 100;
+      break;
+    // Add more cases for each new tower type
+  }
+
+  // Check if the player has enough coins to place the tower
+  if (allCoins >= cost) {
+    allCoins -= cost;
+    Tower newTower = null;
+
+    // Create the new tower based on the type
+    switch (towerType) {
+      case "basic":
+        newTower = new BasicTower(mX, mY, towerImage, towerSize, towerDamage, towerRange);
+        break;
+      case "flamethrower":
+        newTower = new FlameTower(mX, mY, towerImage, towerSize, towerDamage, towerRange);
+        break;
+      // Add more cases as you introduce new tower types
+    }
+
+    if (newTower != null) {
+      towers.add(newTower);
+    }
   }
 }
 
@@ -66,9 +108,10 @@ void drawCoins() {
   fill(255);
   text(allCoins, 100, 33);
 }
-
+//updated 24.02
 void drawTowers() {
   for (Tower t : towers) {
+    t.tick(); // This ensures the tick method is called, which is necessary for shooting lasers.
     image(t.image, t.x-(t.size/2), t.y-(t.size/2), t.size, t.size);
   }
 }
