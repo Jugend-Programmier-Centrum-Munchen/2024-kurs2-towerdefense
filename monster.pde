@@ -11,6 +11,7 @@ class Monster {
   int checkpoint = 0;
   PImage image;
   boolean visible = true;
+  int originalSpeed;
   int speed;
   int size;
 
@@ -23,6 +24,7 @@ class Monster {
     this.hpmax = hp;
     this.image = img;
     this.speed = speed;
+    this.originalSpeed = this.speed;
     this.size = size;
     this.coins = coins;
 
@@ -39,6 +41,15 @@ class Monster {
       allCoins += this.coins;
       monsterTot++;
     }
+  }
+  
+  void speedReduction(int amount) {
+    this.speed -= amount;
+    if (this.speed <= 0) this.speed = 1;
+  }
+  
+  void speedReset() {
+    this.speed = originalSpeed;
   }
 
   void tick() {

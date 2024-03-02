@@ -20,7 +20,7 @@ void setup() {
   size(1000, 670);
   backgroundMap = loadImage("back.png");
   background(backgroundMap);
-  towers.add(new BasicTower(440, 350, loadImage("tower.png"), 80, 2, 200)); // Erster Standart-Tower
+  towers.add(new BasicTower(440, 350)); // Erster Standart-Tower
   globalMonsterTick = 0;
   currentMonsterRate = 50;
 
@@ -47,54 +47,36 @@ void keyPressed() {
     placeTower(mouseX, mouseY, "basic");
   }
   if (key == '2') {
-    placeTower(mouseX, mouseY, "flamethrower");
+    placeTower(mouseX, mouseY, "flame");
+  }
+  if (key == '3') {
+    placeTower(mouseX, mouseY, "electro");
   }
 }
 //updated code 24.02
 
 void placeTower(int mX, int mY, String towerType) {
-  int cost = 0; // You'll need to define the cost based on tower type
-  PImage towerImage= loadImage("tower.png");; // Default image, change as needed
-  int towerSize = 80; // Default size, adjust as necessary
-  int towerDamage = 1; // Default damage, adjust as necessary
-  int towerRange = 200; // Default range, adjust as necessary
 
-  // Determine the specific attributes and cost for each tower type
+  Tower newTower;
+
   switch (towerType) {
     case "basic":
-      cost = 5; // Example cost
-      towerImage = loadImage("tower.png");
-      towerDamage = 2;
-      towerRange = 200;
+      newTower = new BasicTower(mX, mY);
       break;
-    case "flamethrower":
-      cost = 10; // Example cost
-      towerImage = loadImage("tower_flame.png");
-      towerDamage = 4;
-      towerRange = 100;
+    case "flame":
+      newTower = new FlameTower(mX, mY);
       break;
-    // Add more cases for each new tower type
+    case "electro":
+      newTower = new ElectroTower(mX, mY);
+      break;
+    // Add more cases as you introduce new tower types
+    default:
+      return;
   }
 
-  // Check if the player has enough coins to place the tower
-  if (allCoins >= cost) {
-    allCoins -= cost;
-    Tower newTower = null;
-
-    // Create the new tower based on the type
-    switch (towerType) {
-      case "basic":
-        newTower = new BasicTower(mX, mY, towerImage, towerSize, towerDamage, towerRange);
-        break;
-      case "flamethrower":
-        newTower = new FlameTower(mX, mY, towerImage, towerSize, towerDamage, towerRange);
-        break;
-      // Add more cases as you introduce new tower types
-    }
-
-    if (newTower != null) {
-      towers.add(newTower);
-    }
+  if (newTower.cost <= allCoins) {
+    towers.add(newTower);
+    allCoins -= newTower.cost;
   }
 }
 
@@ -117,7 +99,8 @@ void drawTowers() {
 }
 
 void drawMonsters() {
-  for (Monster a : monsters) {
+  for (int i = 0; i < monsters.size(); i++) {
+    Monster a = monsters.get(i);
     if (a != null && a.visible == true) {
       image(a.image, a.x-(a.size/2), a.y-(a.size/2), a.size, a.size);
       fill(170);  // Health Bar (Background)
@@ -133,6 +116,9 @@ void drawMonsters() {
       fill(10);
       textAlign(CENTER, CENTER);
       text(a.hp, a.x, a.y-50);
+    }
+    else if (a != null && a.visible == false) {
+      monsters.remove(a);
     }
   }
 }
