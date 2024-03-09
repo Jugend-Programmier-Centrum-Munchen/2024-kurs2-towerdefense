@@ -20,7 +20,7 @@ int allCoins = 30;
 
 // Castle
 PImage castleImage;
-int lives = 1;
+int lives = 100;
 
 void setup() {
   size(1000, 670);
