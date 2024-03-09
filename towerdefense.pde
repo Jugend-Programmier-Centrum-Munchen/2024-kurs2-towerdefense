@@ -1,59 +1,82 @@
-// Checkpoints und Einstellungen der Karte
-PImage backgroundMap;
+import processing.sound.*;
 
+// Music
+SoundFile backgroundMusic;
+SoundFile gameoverMusic;
+
+// Map
+PImage backgroundMap;
 int[] pointsX = {-10, 160, 160, 360, 360, 630, 630, 900};
 int[] pointsY = {360, 360, 170, 170, 425, 425, 310, 310};
 
+// Monsters und Towers
 ArrayList<Monster> monsters = new ArrayList<Monster>();
 ArrayList<Tower> towers = new ArrayList<Tower>();
 
+// Monster Spawn und Coins
 int globalMonsterTick;
 int currentMonsterRate;
 int allCoins = 30;
 
-//neu
+// Castle
 PImage castleImage;
-int lives = 100;
-
+int lives = 1;
 
 void setup() {
   size(1000, 670);
   backgroundMap = loadImage("back.png");
-  background(backgroundMap);
-  towers.add(new BasicTower(440, 350)); // Erster Standart-Tower
+  castleImage = loadImage("burg.png");
+  
   globalMonsterTick = 0;
   currentMonsterRate = 50;
-
-  //neu
-  castleImage = loadImage("burg.png");
+  
+  background(backgroundMap);
+  towers.add(new BasicTower(440, 350));
   drawCoins();
+  
+  // Music
+  backgroundMusic = new SoundFile(this, sketchPath("music.mp3"));
+  gameoverMusic = new SoundFile(this, "C:/Projekte/JPCM/Kurs 2/Tower Defense/gameover.mp3");
+  backgroundMusic.play();
 }
 
 void draw() {
   background(backgroundMap);
-  drawCoins();
-
+  
   monsterSpawnTick();
   allMonstersTick(monsters);
 
+  drawCoins();
   drawTowers();
   drawMonsters();
-
   drawCastle();
+  
+  if (lives <= 0) {
+    background(255, 100, 0, 150);
+    textSize(30);
+    fill(255, 255, 255);
+    text("GAME OVER", 500, 320);
+    text("CASTLE HAS FALLEN!", 500, 350);
+    noLoop();
+    
+    backgroundMusic.stop();
+    gameoverMusic.play();
+  }
 }
 
 void keyPressed() {
-   if (key == '1') {
-    placeTower(mouseX, mouseY, "basic");
-  }
-  if (key == '2') {
-    placeTower(mouseX, mouseY, "flame");
-  }
-  if (key == '3') {
-    placeTower(mouseX, mouseY, "electro");
+  switch(key) {
+    case '1':
+      placeTower(mouseX, mouseY, "basic");
+      break;
+    case '2':
+      placeTower(mouseX, mouseY, "flame");
+      break;
+    case '3':
+      placeTower(mouseX, mouseY, "electro");
+      break;
   }
 }
-//updated code 24.02
 
 void placeTower(int mX, int mY, String towerType) {
 
