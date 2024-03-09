@@ -26,14 +26,14 @@ void setup() {
   size(1000, 670);
   backgroundMap = loadImage("back.png");
   castleImage = loadImage("burg.png");
-  
+
   globalMonsterTick = 0;
   currentMonsterRate = 50;
-  
+
   background(backgroundMap);
   towers.add(new BasicTower(440, 350));
   drawCoins();
-  
+
   // Music
   backgroundMusic = new SoundFile(this, sketchPath("music.mp3"));
   gameoverMusic = new SoundFile(this, "C:/Projekte/JPCM/Kurs 2/Tower Defense/gameover.mp3");
@@ -42,7 +42,7 @@ void setup() {
 
 void draw() {
   background(backgroundMap);
-  
+
   monsterSpawnTick();
   allMonstersTick(monsters);
 
@@ -50,7 +50,7 @@ void draw() {
   drawTowers();
   drawMonsters();
   drawCastle();
-  
+
   if (lives <= 0) {
     background(255, 100, 0, 150);
     textSize(30);
@@ -58,7 +58,7 @@ void draw() {
     text("GAME OVER", 500, 320);
     text("CASTLE HAS FALLEN!", 500, 350);
     noLoop();
-    
+
     backgroundMusic.stop();
     gameoverMusic.play();
   }
